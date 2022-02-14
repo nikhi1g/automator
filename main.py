@@ -103,7 +103,7 @@ def get_three_digit_milliseconds():
     i = datetime.datetime.now()
 
 
-def on_press(key): #mainstuffoccurshere
+def on_press(key):
     global recorder, last_char, second_to_last_char, diff, count, Enable_Keyboard_Hotkeys
     if key == keyboard.Key.esc:
         sleep(1)
@@ -132,8 +132,12 @@ def on_press(key): #mainstuffoccurshere
                 pos = position()
                 write_to_file(f"moveTo({pos[0]}, {pos[1]}, 1)")
             if last_char == "d":
+                pos = position()
+                write_to_file(f"moveTo({pos[0]}, {pos[1]}, 1)")
                 write_to_file("mouseDown()")
             if last_char == "u":
+                pos = position()
+                write_to_file(f"moveTo({pos[0]}, {pos[1]}, 1)")
                 write_to_file("mouseUp()")
             if last_char == "1":
                 write_to_file("hotkey('ctrl', 'left', interval = 0.25)")
@@ -147,6 +151,9 @@ def on_press(key): #mainstuffoccurshere
                 pos = position()
                 write_to_file(f"moveTo({pos[0]}, {pos[1]}, 1)")
                 write_to_file("click()")
+            if second_to_last_char == "h":
+                if last_char == "p":
+                    print('p')
     except Exception as e:
 
         if key == keyboard.Key.alt:

@@ -8,6 +8,7 @@ import pyperclip as pyp
 import sys
 import os
 
+
 def moveTo_percent(percX: int, percY: int, seconds=0.01):
     screen_size = size()
 
@@ -22,6 +23,7 @@ def write_to_file(streng: str):
         f.write(streng + "\n")
         print(streng)
 
+
 def clear_file():
     with open("pyautoguilog.py", "w") as f:
         f.truncate(0)
@@ -32,12 +34,13 @@ def initialize_file():
     write_to_file("from pyautogui import *")
     write_to_file("from time import sleep")
     write_to_file("from pynput import keyboard")
+    write_to_file("import pyperclip as pyp")
     write_to_file("")
     write_to_file("sleeptime = 1")
-
-
-
-
+    write_to_file("")
+    write_to_file("def copypaste(streng):")
+    write_to_file("     pyp.copy(str(streng))")
+    write_to_file("     hotkey('command', 'v')")
 
 
 '''
@@ -124,36 +127,38 @@ def on_press(key):
         # test_print()
 
         if Enable_Keyboard_Hotkeys:
-            if last_char == "c":
+            if last_char == "c":  # copy
                 write_to_file("hotkey('command', 'c')")
-            if last_char == "v":
+            if last_char == "v":  # paste
                 write_to_file("hotkey('command', 'v')")
-            if last_char == "w":
+            if last_char == "w":  # movetoposition
                 pos = position()
                 write_to_file(f"moveTo({pos[0]}, {pos[1]}, 1)")
-            if last_char == "d":
+            if last_char == "d":  # mousedown
                 pos = position()
                 write_to_file(f"moveTo({pos[0]}, {pos[1]}, 1)")
                 write_to_file("mouseDown()")
-            if last_char == "u":
+            if last_char == "u":  # mouseup
                 pos = position()
                 write_to_file(f"moveTo({pos[0]}, {pos[1]}, 1)")
                 write_to_file("mouseUp()")
-            if last_char == "1":
+            if last_char == "1":  # moveleftmac
                 write_to_file("hotkey('ctrl', 'left', interval = 0.25)")
-            if last_char == "2":
+            if last_char == "2":  # moverightmac
                 write_to_file("hotkey('ctrl', 'right', interval = 0.25)")
-            if last_char == "x":
+            if last_char == "x":  # click
                 write_to_file("click(interval=sleeptime)")
-            if last_char == "s":
+            if last_char == "s":  # wait sleeptime
                 write_to_file("sleep(sleeptime)")
-            if last_char == "m":
+            if last_char == "m":  # movetoandclick
                 pos = position()
                 write_to_file(f"moveTo({pos[0]}, {pos[1]}, 1)")
                 write_to_file("click()")
             if second_to_last_char == "h":
-                if last_char == "p":
-                    print('p')
+                if last_char == "e":  # enter what to write
+                    user_input = input("Enter what to write here: ")
+                    user_input = "'" + user_input + "'"
+                    write_to_file(f"copypaste({str(user_input)})")
     except Exception as e:
 
         if key == keyboard.Key.alt:
@@ -166,17 +171,14 @@ def on_press(key):
             print('disabled')
 
 
-
-
-
-
 def test_print():
     global recorder, last_char, second_to_last_char
     print(recorder, "\t" + second_to_last_char, "\t" + last_char)
     if second_to_last_char == last_char:
         print('tripped')
 
-def start_main(): #starts everything
+
+def start_main():  # starts everything
     Thread(target=millitimer).start()
     start_keyboard()
 
@@ -185,4 +187,3 @@ if __name__ == "__main__":
     clear_file()
     initialize_file()
     Thread(target=start_main).start()
-
